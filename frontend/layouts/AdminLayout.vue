@@ -81,7 +81,7 @@
     </header>
     <div class="px-2.5 w-full z-0">
         <slot />
-    </div>
+    </div>  
 </template>
 
 <script setup>

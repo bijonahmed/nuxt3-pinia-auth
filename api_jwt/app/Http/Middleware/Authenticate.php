@@ -12,9 +12,13 @@ class Authenticate extends Middleware
      */
     protected function redirectTo($request)
     {
-        if (! $request->expectsJson()) {
-            session()->flash('error', 'Session expired');
-            return route('login');
+
+        if (!$request->expectsJson()) {
+            // Return a JSON response for non-JSON requests
+            echo response()->json(['error' => 'Invalid Request'], 401);
+            exit;
+            
+            //return response()->json(['error' => 'Session expired'], 401);
         }
     }
 }

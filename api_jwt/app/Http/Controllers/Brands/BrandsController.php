@@ -22,10 +22,16 @@ class BrandsController extends Controller
     protected $userid;
     public function __construct()
     {
+
+
+        $id = auth('api')->user();
+
         $this->middleware('auth:api');
         $id = auth('api')->user();
-        $user = User::find($id->id);
-        $this->userid = $user->id;
+        if (!empty($id->id)) {
+            $user = User::find($id->id);
+            $this->userid = $user->id;
+        }
     }
 
     public function save(Request $request)

@@ -2,7 +2,6 @@ import { defineStore } from "pinia";
 import axios from "~/plugins/axios";
 
 const $axios = axios().provide.axios;
-
 export const useUserStore = defineStore('user', {
     state: () => ({
         id: '',
@@ -13,13 +12,11 @@ export const useUserStore = defineStore('user', {
     }),
     actions: {
         async login(email, password) {
-            await $axios.post('/api/auth/login', {
+            await $axios.post('/auth/login', {
               email: email,
               password: password,
             }).then((result) => {
-
-
-                console.log("response:" +  result.data.user.id);
+              //  console.log("response:" +  result.data.user.id);
                 //console.log("response:" +  result.data.access_token);
              //   return false; 
                 localStorage.setItem('token',result.data.access_token)
@@ -31,7 +28,7 @@ export const useUserStore = defineStore('user', {
         },
         
         async register(name, email, password, confirmPassword) {
-            await $axios.post('/api/register', {
+            await $axios.post('/register', {
               full_name: name,
               email: email,
               password: password,
@@ -40,7 +37,7 @@ export const useUserStore = defineStore('user', {
         },
 
         async getUser() {
-            let res = await $axios.get('/api/user')
+            let res = await $axios.post('/auth/me')
             this.$state.id = res.data.data.id
             this.$state.full_name = res.data.data.full_name
             this.$state.email = res.data.data.email      
@@ -48,7 +45,7 @@ export const useUserStore = defineStore('user', {
         },
       
         async logout() {
-            await $axios.post('/api/logout')
+            await $axios.post('/auth/logout')
             this.resetState()
         },
 

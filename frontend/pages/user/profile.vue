@@ -1,4 +1,5 @@
 <template>
+    <title>Profile</title>
     <AdminLayout>
         <div class="flex">
             <div class="flex flex-col w-64 h-screen px-4 py-8 overflow-y-auto border-r">
@@ -39,11 +40,13 @@
     const router = useRouter()
     const userStore = useUserStore()
 
+
+
     const { email} = storeToRefs(userStore)
 
     definePageMeta({
-    middleware: 'is-logged-out'
-        
+    middleware: 'is-logged-out',
+    title: 'Profile' // Set your desired page title here
 
     })
 

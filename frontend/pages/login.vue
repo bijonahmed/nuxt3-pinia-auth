@@ -46,14 +46,11 @@
     import axios from 'axios';
     import { useUserStore } from '~~/stores/user';
     import AdminLayout from '~/layouts/AdminLayout.vue';
-
     const userStore = useUserStore()
-
     const router = useRouter()
 
     definePageMeta({
         middleware: 'is-logged-in'
-        
     })
 
     let email = ref(null)
