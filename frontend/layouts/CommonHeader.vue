@@ -13,10 +13,13 @@
                         <li class="nav-item">
                             <LazyNuxtLink class="nav-link active" aria-current="page" to="/">Home</LazyNuxtLink>
                         </li>
-
+                        <li class="nav-item" v-if="!isLoggedIn">
+                            <LazyNuxtLink class="nav-link" to="/cart">My Cart</LazyNuxtLink>
+                        </li>
                         <li class="nav-item" v-if="!isLoggedIn">
                             <LazyNuxtLink class="nav-link" to="/auth/register">Register</LazyNuxtLink>
                         </li>
+
 
                         <li class="nav-item" v-if="!isLoggedIn">
                             <LazyNuxtLink class="nav-link" to="/auth/login">Login</LazyNuxtLink>

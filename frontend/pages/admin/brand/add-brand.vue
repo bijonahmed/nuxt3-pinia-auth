@@ -41,9 +41,6 @@
             </div>
         </div>
 
-
-
-
     </div>
 </template>
 <script setup>
@@ -60,8 +57,6 @@ const insertdata = ref({
 
 const notifmsg = ref('')
 const errors = ref({})
-
-
 
 const saveData = async () => {
     const formData = new FormData();
@@ -101,12 +96,6 @@ const saveData = async () => {
     }
 }
 
-
-
-
-const test = () => {
-    alert("----");
-}
 onMounted(() => {
     // test();
     // brandlist(); // Call the brandlist function when the component is mounted
