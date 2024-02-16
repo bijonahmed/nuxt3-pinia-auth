@@ -1,4 +1,5 @@
 <template>
+    <title>Admin Dashboard</title>
     <div>
         <h1>Admin Dashboard</h1>
         {{ email }}
@@ -24,7 +25,7 @@ onMounted(async () => {
     try {
         await userStore.getUser()
     } catch (error) {
-        console.log(error)
+      //  console.log(error)
     }
 })
 

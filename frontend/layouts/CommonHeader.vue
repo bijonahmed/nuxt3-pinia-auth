@@ -23,7 +23,11 @@
                         </li>
 
                         <li class="nav-item" v-if="isLoggedIn">
-                            <LazyNuxtLink class="nav-link" to="/admin/dashboard">Admin Dashboard</LazyNuxtLink>
+                            <lazyNuxtLinkAdmin class="nav-link" to="/dashboard">Admin Dashboard</lazyNuxtLinkAdmin>
+                        </li>
+
+                        <li class="nav-item" v-if="isLoggedIn">
+                            <lazyNuxtLinkAdmin class="nav-link" to="/brand/brand-list">Brands</lazyNuxtLinkAdmin>
                         </li>
 
                         <li class="nav-item" v-if="isLoggedIn">
@@ -64,16 +68,18 @@ computed(async () => {
 //const login = async () => 
 
 const logout = async () => {
-        let res = confirm('Are you sure you want to sign out?')
-        try {
-            if (res) {
-                await userStore.logout()
-                localStorage.removeItem('token');
-                router.push('/')
-                return
-            }
-        } catch (error) {
-            console.log(error) 
+    let res = confirm('Are you sure you want to sign out?')
+    try {
+        if (res) {
+            await userStore.logout()
+            localStorage.removeItem('token');
+            //router.push('/login')
+            window.location.href = '/login';
+          //  this.$router.push({ name: 'login' })
+            return
         }
+    } catch (error) {
+        console.log(error)
     }
+}
 </script>
