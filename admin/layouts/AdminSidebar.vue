@@ -24,7 +24,7 @@
 							<p>
 								{{ item.label }}
 								<i class="fas fa-angle-left right"></i>
-								<span class="badge badge-info right">{{ item.badge }}</span>
+								<!-- <span class="badge badge-info right">{{ item.badge }}</span> -->
 							</p>
 						</a>
 						<ul class="nav nav-treeview" v-if="item.children">
@@ -54,7 +54,7 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 
 const menuItems = ref([
-	
+
 	{
 		label: 'Profile',
 		icon: 'fa-th',
@@ -64,25 +64,50 @@ const menuItems = ref([
 		children: null
 	},
 	{
-		label: 'Layout Options',
-		icon: 'fa-copy',
+		label: 'My Products',
+		icon: 'fa-folder',
 		badge: '6',
 		open: false,
 		route: null,
 		children: [
-			{ label: 'Top Navigation', icon: 'fa-circle', route: '/layout/top-navigation' },
-			{ label: 'Top Navigation + Sidebar', icon: 'fa-circle', route: '/layout/top-navigation-sidebar' }
+			{ label: 'Products', icon: 'fa-circle', route: '/layout/top-navigation' },
+			{ label: 'Order History', icon: 'fa-circle', route: '/layout/top-navigation-sidebar' }
 		]
 	},
 	{
-		label: 'Charts',
-		icon: 'fa-chart-pie',
+		label: 'Customer',
+		icon: 'fa-folder',
 		badge: '',
 		open: false,
 		route: null,
 		children: [
-			{ label: 'ChartJS', icon: 'fa-circle', route: '/charts/chartjs' },
-			{ label: 'Flot', icon: 'fa-circle', route: '/charts/flot' }
+			{ label: 'Customer Add', icon: 'fa-circle', route: '/charts/chartjs' },
+			{ label: 'Customer List', icon: 'fa-circle', route: '/charts/flot' }
+		]
+	},
+	{
+		label: 'User Management',
+		icon: 'fa-folder',
+		badge: '',
+		open: false,
+		route: null,
+		children: [
+			{ label: 'User Role', icon: 'fa-circle', route: '/charts/chartjs' },
+			{ label: 'User List', icon: 'fa-circle', route: '/charts/flot' }
+		]
+	},
+	{
+		label: 'Setting Management',
+		icon: 'fa-folder',
+		badge: '',
+		open: false,
+		route: null,
+		children: [
+			{ label: 'Category', icon: 'fa-circle', route: '/charts/chartjs' },
+			{ label: 'Attributes', icon: 'fa-circle', route: '/charts/flot' },
+			{ label: 'Brands', icon: 'fa-circle', route: '/charts/flot' },
+			{ label: 'Sliders', icon: 'fa-circle', route: '/charts/flot' },
+			{ label: 'Pre-Setting', icon: 'fa-circle', route: '/charts/flot' }
 		]
 	}
 ]);
@@ -91,3 +116,4 @@ const toggleMenu = (item) => {
 	item.open = !item.open;
 };
 </script>
+
