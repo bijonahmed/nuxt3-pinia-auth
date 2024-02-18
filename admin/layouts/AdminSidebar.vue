@@ -1,10 +1,10 @@
 <template>
 	<aside class="main-sidebar sidebar-dark-primary elevation-4">
-		<a href="index3.html" class="brand-link">
+		<LazyNuxtLink to="/admin/dashboard" class="brand-link">
 			<img src="/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
 				style="opacity: .8">
 			<span class="brand-text font-weight-light">FutureGenIT</span>
-		</a>
+		</LazyNuxtLink>
 
 		<div class="sidebar" ref="sidebar">
         <nav class="mt-2">
@@ -21,7 +21,6 @@
                         <p>
                             Layout Options
                             <i class="fas fa-angle-left right"></i>
-                            <span class="badge badge-info right">6</span>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
@@ -74,11 +73,15 @@ import { ref, onMounted } from 'vue';
 const sidebar = ref(null);
 
 onMounted(() => {
-	$('.nav-item.has-treeview > .nav-link').click(function (e) {
-		// Prevent the default link behavior
-		e.preventDefault();
-		// Toggle the 'menu-open' class on the parent list item
-		$(this).parent().toggleClass('menu-open');
-	});
+	//$(document).ready(function () {
+        // Add click event listener to the nav-link with the right angle icon
+		$('.nav-item.has-treeview > .nav-link > .right').click(function (e) {
+            // Prevent the default link behavior
+            e.preventDefault();
+            
+            // Toggle the 'menu-open' class on the parent list item
+            $(this).closest('.nav-item.has-treeview').toggleClass('menu-open');
+        });
+  //  });
 });
 </script>
