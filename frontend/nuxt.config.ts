@@ -8,7 +8,10 @@ export default defineNuxtConfig({
   //ssr: true,
   runtimeConfig: {
     public: {
-      baseURL: process.env.NODE_ENV === 'production' ? 'https://api.astute360corp.com/api/' : 'http://127.0.0.1:8000/api/',
+      baseURL:
+        process.env.NODE_ENV === "production"
+          ? "https://api.astute360corp.com/api/"
+          : "http://127.0.0.1:8000/api/",
     },
   },
   pages: true,
@@ -26,8 +29,8 @@ export default defineNuxtConfig({
   },
   plugins: [
     // Specify the path to your plugin file
-    '~/plugins/axios.js',
-    '~/plugins/lazyNuxtLinkAdmin.js',
+    "~/plugins/axios.js",
+    "~/plugins/lazyNuxtLinkAdmin.js",
     // Add other plugins as needed
   ],
   modules: [
@@ -68,10 +71,10 @@ export default defineNuxtConfig({
       viewport: "width=device-width, initial-scale=1, maximum-scale=1",
       // Add CSS file
       link: [
-        {
-          rel: "stylesheet",
-          href: "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css",
-        },
+
+        //Fronend
+        { rel: "stylesheet",href: "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"},
+
       ],
       // Add JavaScript file
       script: [
