@@ -165,18 +165,18 @@ computed(async () => {
 //const login = async () => 
 
 const logout = async () => {
-	let res = confirm('Are you sure you want to sign out?')
-	try {
-		if (res) {
-			await userStore.logout()
-			localStorage.removeItem('token');
-			//router.push('/')
-			window.location.href = '/';
-			//  this.$router.push({ name: 'login' })
-			return
-		}
-	} catch (error) {
-		console.log(error)
-	}
-}
+  const router = useRouter(); // Get the router object
+
+  let res = confirm('Are you sure you want to sign out?');
+  try {
+    if (res) {
+      await userStore.logout();
+      localStorage.removeItem('token');
+      router.push('/'); // Redirect to the root route
+      return;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
 </script>

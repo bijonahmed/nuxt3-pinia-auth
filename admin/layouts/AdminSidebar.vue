@@ -7,81 +7,87 @@
 		</LazyNuxtLink>
 
 		<div class="sidebar" ref="sidebar">
-        <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <li class="nav-item">
-                    <LazyNuxtLink to="/user/my-profile" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
-                        <p>Profile</p>
-                    </LazyNuxtLink>
-                </li>
-                <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-copy"></i>
-                        <p>
-                            Layout Options
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="pages/layout/top-nav.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Top Navigation</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Top Navigation + Sidebar</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-chart-pie"></i>
-                        <p>
-                            Charts
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="pages/charts/chartjs.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>ChartJS</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="pages/charts/flot.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Flot</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </nav>
-    </div>
+			<nav class="mt-2">
+				<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+					<li class="nav-item" v-for="(item, index) in menuItems" :key="index"
+						:class="{ 'menu-open': item.open }">
+						<router-link v-if="item.route" :to="item.route" class="nav-link" @click="toggleMenu(item)">
+							<i class="nav-icon fas" :class="item.icon"></i>
+							<p>
+								{{ item.label }}
+								<!-- <i class="fas fa-angle-left right"></i>
+								<span class="badge badge-info right">{{ item.badge }}</span> -->
+							</p>
+						</router-link>
+						<a href="#" v-else class="nav-link" @click="toggleMenu(item)">
+							<i class="nav-icon fas" :class="item.icon"></i>
+							<p>
+								{{ item.label }}
+								<i class="fas fa-angle-left right"></i>
+								<span class="badge badge-info right">{{ item.badge }}</span>
+							</p>
+						</a>
+						<ul class="nav nav-treeview" v-if="item.children">
+							<li class="nav-item" v-for="(childItem, childIndex) in item.children" :key="childIndex">
+								<router-link v-if="childItem.route" :to="childItem.route" class="nav-link">
+									<i class="far fa-circle nav-icon"></i>
+									<p>{{ childItem.label }}</p>
+								</router-link>
+								<a v-else href="#" class="nav-link">
+									<i class="far fa-circle nav-icon"></i>
+									<p>{{ childItem.label }}</p>
+								</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</nav>
+		</div>
 
 	</aside>
 </template>
+
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
-const sidebar = ref(null);
+const router = useRouter();
 
-onMounted(() => {
-	//$(document).ready(function () {
-        // Add click event listener to the nav-link with the right angle icon
-		$('.nav-item.has-treeview > .nav-link > .right').click(function (e) {
-            // Prevent the default link behavior
-            e.preventDefault();
-            
-            // Toggle the 'menu-open' class on the parent list item
-            $(this).closest('.nav-item.has-treeview').toggleClass('menu-open');
-        });
-  //  });
-});
+const menuItems = ref([
+	
+	{
+		label: 'Profile',
+		icon: 'fa-th',
+		badge: 'New',
+		open: false,
+		route: '/user/my-profile',
+		children: null
+	},
+	{
+		label: 'Layout Options',
+		icon: 'fa-copy',
+		badge: '6',
+		open: false,
+		route: null,
+		children: [
+			{ label: 'Top Navigation', icon: 'fa-circle', route: '/layout/top-navigation' },
+			{ label: 'Top Navigation + Sidebar', icon: 'fa-circle', route: '/layout/top-navigation-sidebar' }
+		]
+	},
+	{
+		label: 'Charts',
+		icon: 'fa-chart-pie',
+		badge: '',
+		open: false,
+		route: null,
+		children: [
+			{ label: 'ChartJS', icon: 'fa-circle', route: '/charts/chartjs' },
+			{ label: 'Flot', icon: 'fa-circle', route: '/charts/flot' }
+		]
+	}
+]);
+
+const toggleMenu = (item) => {
+	item.open = !item.open;
+};
 </script>
