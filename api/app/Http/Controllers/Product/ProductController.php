@@ -42,7 +42,7 @@ class ProductController extends Controller
         $validator = Validator::make($request->all(), [
             'name'           => 'required',
             //  'category'       => 'required',
-           
+
             // 'files' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // max:2048 is the maximum file size in kilobytes (2MB)
         ]);
         if ($validator->fails()) {
@@ -80,7 +80,7 @@ class ProductController extends Controller
             'vat_status'                 => !empty($request->vat_status) ? $request->vat_status : "",
             'tax'                        => !empty($request->tax) ? $request->tax : 0,
             'tax_status'                 => !empty($request->tax_status) ? $request->tax_status : "",
-            'status'                     => 1,//!empty($request->status) ? $request->status : "",
+            'status'                     => 1, //!empty($request->status) ? $request->status : "",
             'entry_by'                   => $this->userid
         );
         if (!empty($request->file('files'))) {
@@ -456,21 +456,45 @@ class ProductController extends Controller
         return response()->json($responseData);
     }
 
-    public function getProductList()
+    public function getProductList(Request $request)
     {
-        $data = Product::orderBy('id', 'desc')->get();
-        $collection = collect($data);
-        $modifiedCollection = $collection->map(function ($item) {
-            return [
-                'id'        => $item['id'],
-                'name'      => substr($item['name'], 0, 250),
-                'download_link' => $item['download_link'],
-                'status'    => $item['status'],
+        //dd($request->all());
+        $page = $request->input('page', 1);
+        $pageSize = $request->input('pageSize', 5);
 
+        // Get search query from the request
+        $searchQuery    = $request->searchQuery;
+        $selectedFilter = (int)$request->selectedFilter;
+        // dd($selectedFilter);
+        $query = Product::orderBy('id', 'desc');
+        
+        if ($searchQuery !== null) {
+            $query->where('name', 'like', '%' . $searchQuery . '%');
+        }
+
+        if ($selectedFilter !== null) {
+
+            $query->where('status', $selectedFilter);
+        }
+
+        $paginator = $query->paginate($pageSize, ['*'], 'page', $page);
+
+        $modifiedCollection = $paginator->getCollection()->map(function ($item) {
+            return [
+                'id'         => $item->id,
+                'name'       => substr($item->name, 0, 250),
+                'stock_qty'  => $item->stock_qty,
+                'status'     => $item->status,
             ];
         });
-        //dd($modifiedCollection);
-        return response()->json($modifiedCollection, 200);
+
+        // Return the modified collection along with pagination metadata
+        return response()->json([
+            'data' => $modifiedCollection,
+            'current_page' => $paginator->currentPage(),
+            'total_pages' => $paginator->lastPage(),
+            'total_records' => $paginator->total(),
+        ], 200);
     }
 
     public function removeProducts($id)

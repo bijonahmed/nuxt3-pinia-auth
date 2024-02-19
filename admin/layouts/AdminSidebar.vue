@@ -70,8 +70,8 @@ const menuItems = ref([
 		open: false,
 		route: null,
 		children: [
-			{ label: 'Products', icon: 'fa-circle', route: '/layout/top-navigation' },
-			{ label: 'Order History', icon: 'fa-circle', route: '/layout/top-navigation-sidebar' }
+			{ label: 'Products', icon: 'fa-circle', route: '/products/list' },
+			{ label: 'Orders', icon: 'fa-circle', route: '/layout/top-navigation-sidebar' }
 		]
 	},
 	{

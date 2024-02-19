@@ -4,7 +4,8 @@
         <div class="row">
             <div class="col-10">Brand List</div>
             <div class="col-2">
-                <lazyNuxtLinkAdmin to="/brand/add-brand" class="btn btn-primary text-right">Add New Brand</lazyNuxtLinkAdmin>
+                <lazyNuxtLinkAdmin to="/brand/add-brand" class="btn btn-primary text-right">Add New Brand
+                </lazyNuxtLinkAdmin>
             </div>
         </div>
         <table class="table">
@@ -22,17 +23,18 @@
                     <th scope="row">{{ index + 1 }}</th>
                     <td>{{ brand.name }}</td>
                     <td class="text-center">
-                                        <span v-if="(brand.status == 1)"> Active </span>
-                                        <span v-else> Inactive </span>
-                                    </td>
-                                    <td>
-                                        <center>
-                                            <lazyNuxtLinkAdmin :to="`/brand/edit/${brand.id}`" variant="warning" size="sm"><i class="bx bx-edit"></i>EDIT
-                                            </lazyNuxtLinkAdmin>
-                                             <!-- <span  @click="editCustomer(item.id)"><i class="bx bx-edit"></i>Edit</span> -->
-                                            
-                                        </center>
-                                    </td>
+                        <span v-if="(brand.status == 1)"> Active </span>
+                        <span v-else> Inactive </span>
+                    </td>
+                    <td>
+                        <center>
+                            <lazyNuxtLinkAdmin :to="`/brand/edit/${brand.id}`" variant="warning" size="sm"><i
+                                    class="bx bx-edit"></i>EDIT
+                            </lazyNuxtLinkAdmin>
+                            <!-- <span  @click="editCustomer(item.id)"><i class="bx bx-edit"></i>Edit</span> -->
+
+                        </center>
+                    </td>
                 </tr>
 
             </tbody>

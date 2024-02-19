@@ -53,14 +53,14 @@
         try {
             await userStore.login(email.value, password.value);
             const token = window.localStorage.getItem('token');
-            console.log("My token: " + token);
+            //console.log("My token: " + token);
             if (token) {
                 axios.defaults.headers.common['Authorization'] = 'Bearer ' + userStore.api_token;
             }
-            console.log("get token from login: " + token);
+            //console.log("get token from login: " + token);
             router.push('/admin/dashboard')
         } catch (error) {
-            console.log("erros-------: " + error);
+            //console.log("erros-------: " + error);
             errors.value = error.response.errors
         }
     }
