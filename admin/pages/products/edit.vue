@@ -162,9 +162,10 @@
 
                                                         <div class="row mb-3">
                                                             <label for="input-description-1"
-                                                                class="col-sm-2 col-form-label">Description</label>
+                                                                class="col-sm-2 col-form-label">Description1111111</label>
                                                             <div class="col-sm-10">
-                                                                <div id="summernote-editor" style="height: 100%;"></div>
+                                                                <!-- <div id="summernote-editor" style="height: 100%;"></div> -->
+                                                                <div ref="summernoteEditor" style="height: 100%;"></div>
                                                             </div>
                                                         </div>
                                                         <hr />
@@ -500,13 +501,14 @@ import axios from 'axios';
 import swal from 'sweetalert2';
 import { useRouter } from 'vue-router';
 const router = useRouter();
+import 'summernote/dist/summernote-bs4.css'; // Import Summernote CSS
+import 'summernote'; // Import Summernote JS
 import $ from 'jquery';
 if (process.client) {
     window.Swal = swal;
 
-
 }
-
+const summernoteEditor = ref(null);
 const insertdata = reactive({
     id: '',
     name: '',
@@ -715,15 +717,13 @@ const saveData = () => {
         formData.append('images[]', image.file);
     });
 
-    console.log("Data to be saved:", editorContent.value);
-
     formData.append('id', insertdata.id);
     formData.append('files', file.value);
     console.log("multi category: " + multi_categories.value);
     // formData.append('images', this.images); //multiple
     formData.append('category', multi_categories.value);
     formData.append('name', insertdata.name);
-    formData.append('description', editorContent.value);
+    formData.append('description', summernoteEditor.value);
     formData.append('meta_title', insertdata.meta_title);
     formData.append('meta_description', insertdata.meta_description);
     formData.append('meta_keyword', insertdata.meta_keyword);
@@ -753,7 +753,7 @@ const saveData = () => {
     formData.append('cash_dev_status', insertdata.cash_dev_status);
     formData.append('shipping_days', insertdata.shipping_days);
 
-    axios.post('/product/save', formData, {
+    axios.post('/product/product-update', formData, {
         headers: {
             'Content-Type': 'multipart/form-data'
         }
@@ -816,6 +816,7 @@ const productrow = () => {
     const product_id = router.currentRoute.value.query.parameter;
 
     axios.get(`/product/productrow/${product_id}`).then(response => {
+        //editorContent.value = "";
         //console.log("====" + response.data.product_imgs);
         //return false; 
         insertdata.id = response.data.product.id;
@@ -855,43 +856,28 @@ const productrow = () => {
         insertdata.download_link = response.data.product.download_link;
         productImg.value = response.data.productImg;
         // Handle product images
-        //productAddImgs.value = response.data.product_imgs;
         productAddImgs.value = response.data.product_imgs;
-        loadeditor(response.data.product.description);
+        if (summernoteEditor.value) {
+            // Initialize Summernote
+            const editor = window.$(summernoteEditor.value);
+            editor.summernote({
+                callbacks: {
+                    onChange: handleEditorChange
+                }
+            });
+            editor.summernote('code', response.data.product.description);
+        }
 
     });
-
 };
-let isEditorInitialized = false;
-const loadeditor = (description) => {
-    if (!isEditorInitialized && typeof window.jQuery !== 'undefined' && typeof window.jQuery.fn.summernote !== 'undefined') {
-        // Initialize Summernote
-        window.jQuery('#summernote-editor').summernote('code', description);
-        isEditorInitialized = true;
-    } else if (!isEditorInitialized) {
-        console.error('jQuery or Summernote is not loaded properly.');
-    }
-}
 
-
+const handleEditorChange = (content) => {
+    summernoteEditor.value = content;
+    // Handle editor content change here
+};
+// Call the loadeditor function when the component is mounted
 onMounted(async () => {
-    try {
-        const product_id = router.currentRoute.value.query.parameter;
-        const response = await axios.get(`/product/productrow/${product_id}`);
-        productrow(); // Assuming productrow() is a function defined elsewhere
-        loadeditor(response.data.product.description);
-    } catch (error) {
-        loadeditor('');
-        console.error('Error fetching data:', error);
-    }
+    productrow();
 });
-
-
-// onMounted(() => {
-//     productrow();
-//     loadeditor(response.data.product.description);
-
-
-// });
 
 </script>
