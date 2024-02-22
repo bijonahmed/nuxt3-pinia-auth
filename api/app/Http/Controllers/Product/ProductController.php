@@ -134,18 +134,22 @@ class ProductController extends Controller
 
     public function save(Request $request)
     {
-        // dd($request->all());
+     //dd($request->all());
         $validator = Validator::make($request->all(), [
             'name'           => 'required',
             'category'       => 'required',
             'status'         => 'required',
+            'price'          => 'required',
+            'stock_qty'      => 'required',
+            'stock_mini_qty' => 'required',
+            'sku'            => 'required',
             'files' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // max:2048 is the maximum file size in kilobytes (2MB)
         ]);
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
+       
         $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $request->input('name'))));
-
         $data = array(
             'name'                       => $request->name,
             'slug'                       => $slug,
@@ -154,8 +158,29 @@ class ProductController extends Controller
             'meta_description'           => !empty($request->meta_description) ? $request->meta_description : "",
             'meta_keyword'               => !empty($request->meta_keyword) ? $request->meta_keyword : "",
             'product_tag'                => !empty($request->product_tag) ? $request->product_tag : "",
+            'brand'                      => !empty($request->brand) ? $request->brand : "",
+            'sku'                        => !empty($request->sku) ? $request->sku : "",
+            'external_link'              => !empty($request->external_link) ? $request->external_link : "",
+            'cash_dev_status'            => !empty($request->cash_dev_status) ? $request->cash_dev_status : "",
+            'price'                      => !empty($request->price) ? $request->price : 0,
+            'unit'                       => !empty($request->unit) ? $request->unit : "",
+            'stock_qty'                  => !empty($request->stock_qty) ? $request->stock_qty : "",
+            'stock_mini_qty'             => !empty($request->stock_mini_qty) ? $request->stock_mini_qty : 0,
+            'stock_status'               => !empty($request->stock_status) ? $request->stock_status : "",
+            'manufacturer'               => !empty($request->manufacturer) ? $request->manufacturer : "",
+            'manufacturer'               => !empty($request->manufacturer) ? $request->manufacturer : "",
             'download_link'              => !empty($request->download_link) ? $request->download_link : "",
-            'status'                     => !empty($request->status) ? $request->status : "",
+            'discount'                   => !empty($request->discount) ? $request->discount : "",
+            'discount_status'            => !empty($request->discount_status) ? $request->discount_status : "",
+            'shipping_days'              => !empty($request->shipping_days) ? $request->shipping_days : "",
+            'free_shopping'              => !empty($request->free_shopping) ? $request->free_shopping : "",
+            'flat_rate_status'           => !empty($request->flat_rate_status) ? $request->flat_rate_status : "",
+            'flat_rate_price'            => !empty($request->flat_rate_price) ? $request->flat_rate_price : "",
+            'vat'                        => !empty($request->vat) ? $request->vat : 0,
+            'vat_status'                 => !empty($request->vat_status) ? $request->vat_status : "",
+            'tax'                        => !empty($request->tax) ? $request->tax : 0,
+            'tax_status'                 => !empty($request->tax_status) ? $request->tax_status : "",
+            'status'                     => 1, //!empty($request->status) ? $request->status : "",
             'entry_by'                   => $this->userid
         );
         // dd($data);
@@ -189,7 +214,12 @@ class ProductController extends Controller
             //INSERT MULTIPLE CATEGORY
             $category     = $request->category;
             $dynamicArray = explode(',', $category); // Convert the string to an array
+           //dd($dynamicArray);
             $results      = Categorys::whereIn('id', $dynamicArray)->get();
+
+            //dd($results);
+
+
             $formattedResults = [];
             foreach ($results as $result) {
                 $path = [];
@@ -460,7 +490,7 @@ class ProductController extends Controller
     {
         //dd($request->all());
         $page = $request->input('page', 1);
-        $pageSize = $request->input('pageSize', 5);
+        $pageSize = $request->input('pageSize', 10);
 
         // Get search query from the request
         $searchQuery    = $request->searchQuery;

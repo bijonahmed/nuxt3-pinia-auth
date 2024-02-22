@@ -8,10 +8,7 @@ export default defineNuxtConfig({
   //ssr: true,
   runtimeConfig: {
     public: {
-      baseURL:
-        process.env.NODE_ENV === "production"
-          ? "https://api.astute360corp.com/api/"
-          : "http://127.0.0.1:8000/api/",
+      baseURL: process.env.NODE_ENV === "production" ? "https://api.astute360corp.com/api/" : "http://127.0.0.1:8000/api/",
     },
   },
   pages: true,
@@ -82,7 +79,9 @@ export default defineNuxtConfig({
         { rel: "stylesheet", href: "/plugins/overlayScrollbars/css/OverlayScrollbars.min.css" },
         { rel: "stylesheet", href: "/plugins/daterangepicker/daterangepicker.css" },
         { rel: "stylesheet", href: "/plugins/summernote/summernote-bs4.min.css" },
+        { rel: "stylesheet", href: "/plugins/toastr/toastr.min.css" },
         { rel: "stylesheet", href: "https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" },
+ 
         
       ],
       // Add JavaScript file
@@ -103,6 +102,9 @@ export default defineNuxtConfig({
         { src: "/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js",type: "text/javascript" },
         { src: "/dist/js/adminlte2167.js?v=3.2.0",type: "text/javascript" },
         { src: "/dist/js/pages/dashboard.js",type: "text/javascript" },
+        { src: "/plugins/toastr/toastr.min.js",type: "text/javascript" },
+        { src: "https://unpkg.com/sweetalert/dist/sweetalert.min.js",type: "text/javascript" },
+        { src: "https://cdn.tiny.cloud/1/qagffr3pkuv17a8on1afax661irst1hbr4e6tbv888sz91jc/tinymce/6/tinymce.min.js",type: "text/javascript" },
       ],
     },
   },
