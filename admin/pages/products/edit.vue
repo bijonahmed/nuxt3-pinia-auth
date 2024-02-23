@@ -22,7 +22,7 @@
                 </div>
             </section>
 
-            <button @click="loadeditor()">Editor</button>
+
             <section class="content">
                 <div class="container-fluid">
                     <!-- Start -->
@@ -369,11 +369,24 @@
                                                                     <input v-model="categories" @input="search"
                                                                         class="form-control" placeholder="Search..." />
 
+                                                                    <hr />
+                                                                    Selected Categorys:
+
+                                                                    <!-- <span v-for="(data, index) in showProCategories" :key="index">{{ data }}</span> -->
+                                                                    <ul>
+                                                                        <li v-for="(item, index) in showProCategories"
+                                                                            :key="index">
+                                                                            <span>{{ item }}</span>
+                                                                            <button type="button"
+                                                                                @click="removeCategory(item)">
+                                                                                <i class="fas fa-minus-circle"></i>
+                                                                            </button>
+                                                                        </li>
+                                                                    </ul>
+
                                                                     <span class="text-danger" v-if="errors.category">{{
                                                                         errors.category[0] }}</span>
-
                                                                     <ul>
-
                                                                         <li v-for="result in searchResults"
                                                                             :key="result.name">
                                                                             {{ result.category }}
@@ -552,6 +565,7 @@ const images = ref([]);
 const selectedCategory = ref(null);
 const multi_categories = ref('');
 const results = ref([]);
+const showProCategories = ref([]);
 const productAddImgs = ref([]);
 const selectedItems = ref([]);
 const categories = ref('');
@@ -798,7 +812,25 @@ const success_noti = () => {
     });
 };
 
+
+const removeCategory = (item) => {
+    const product_id = router.currentRoute.value.query.parameter;
+  axios.get(`/product/deleteCategory`, {
+    params: {
+      item: item,
+      product_id: product_id,
+    }
+  }).then(response => {
+    productrow();
+  });
+};
+
+
+
+
+
 const removeImages = (id) => {
+
     axios.get(`/product/additionaIMagesDelete`, {
         params: {
             images_id: id
@@ -854,6 +886,7 @@ const productrow = () => {
         insertdata.status = response.data.product.status;
         insertdata.manufacturer = response.data.product.manufacturer;
         insertdata.download_link = response.data.product.download_link;
+        showProCategories.value = response.data.product_edit_cat;
         productImg.value = response.data.productImg;
         // Handle product images
         productAddImgs.value = response.data.product_imgs;
@@ -881,3 +914,107 @@ onMounted(async () => {
 });
 
 </script>
+
+<style scoped>
+.required-label::after {
+    content: "\2605";
+    color: red;
+    margin-right: 4px;
+}
+
+/* CSS */
+ol,
+ul {
+    padding-left: 0rem;
+}
+
+ul {
+    list-style: none;
+}
+
+.bgColor {
+    background-color: #c8c8c8;
+    padding: 1px;
+    border-radius: 2px;
+}
+
+.img-fluid {
+    width: 300px;
+    height: 150px;
+}
+
+.img-fluids {
+    margin-top: 10px;
+    width: 300px;
+    height: 300px;
+}
+
+/* for checkbox */
+.multiselect {
+    position: relative;
+    font-family: Arial, sans-serif;
+    width: 100%;
+}
+
+.select-box {
+    border: 1px solid #ccc;
+    padding: 8px;
+    cursor: pointer;
+    background-color: #fff;
+}
+
+.dropdown {
+    border: 1px solid #ccc;
+    border-top: none;
+    max-height: 400px;
+    overflow-y: auto;
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    background-color: #fff;
+    z-index: 1;
+}
+
+label {
+    display: block;
+    padding: 5px;
+}
+
+input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+.widthtxtbox {
+    width: 50px;
+}
+
+.autocomplete-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-top: none;
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    width: 100%;
+}
+
+.autocomplete-item {
+    padding: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.autocomplete-item:hover {
+    background-color: #f2f2f2;
+}
+
+.checkbox-wrapper {
+    display: flex;
+
+}
+</style>

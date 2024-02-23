@@ -71,7 +71,7 @@ const menuItems = ref([
 		route: null,
 		children: [
 			{ label: 'Products', icon: 'fa-circle', route: '/products/list' },
-			{ label: 'Orders', icon: 'fa-circle', route: '/layout/top-navigation-sidebar' }
+			{ label: 'Orders', icon: 'fa-circle', route: '/orders/list' }
 		]
 	},
 	{
@@ -103,11 +103,11 @@ const menuItems = ref([
 		open: false,
 		route: null,
 		children: [
-			{ label: 'Category', icon: 'fa-circle', route: '/charts/chartjs' },
-			{ label: 'Attributes', icon: 'fa-circle', route: '/charts/flot' },
-			{ label: 'Brands', icon: 'fa-circle', route: '/charts/flot' },
-			{ label: 'Sliders', icon: 'fa-circle', route: '/charts/flot' },
-			{ label: 'Pre-Setting', icon: 'fa-circle', route: '/charts/flot' }
+			{ label: 'Category', icon: 'fa-circle', route: '/category/list' },
+			{ label: 'Attributes', icon: 'fa-circle', route: '#' },
+			{ label: 'Brands', icon: 'fa-circle', route: '#' },
+			{ label: 'Sliders', icon: 'fa-circle', route: '#' },
+			{ label: 'Pre-Setting', icon: 'fa-circle', route: '#' }
 		]
 	}
 ]);

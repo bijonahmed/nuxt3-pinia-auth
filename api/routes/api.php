@@ -18,6 +18,8 @@ use App\Http\Controllers\Manufacturer\ManufacturesController;
 use App\Http\Controllers\Brands\BrandsController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Cart\CartController;
+use App\Http\Controllers\Order\OrderController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -44,6 +46,24 @@ Route::group([
     Route::get('showProfileData', [AuthController::class, 'showProfileData']);
     Route::post('password/email', [ForgotPasswordController::class, 'sendPasswordResetEmail']);
     Route::post('password/reset', [ResetPasswordController::class, 'updatePassword']);
+});
+Route::group([
+    'prefix' => 'order'
+], function () {
+    //Add to cart 
+    Route::post('submitOrder', [OrderController::class, 'submitOrder']);
+    Route::get('getOrder', [OrderController::class, 'getOrder']);
+    Route::get('allOrders', [OrderController::class, 'allOrders']);
+    Route::get('orderDetails/{orderid}', [OrderController::class, 'orderDetails']);
+    Route::post('updateOrderStatus', [OrderController::class, 'updateOrderStatus']);
+    Route::get('addtowish/{slug}', [OrderController::class, 'addtowish']);
+    Route::get('allWishList/', [OrderController::class, 'allWishList']);
+    Route::get('removeWishList/{productid}', [OrderController::class, 'removeWishList']);
+    Route::get('orderStatus', [OrderController::class, 'orderStatus']);
+    Route::get('orderStatusRow/{id}', [OrderController::class, 'orderStatusRow']);
+    Route::post('save_order', [OrderController::class, 'save_order']);
+    Route::get('allOrdersAdmin', [OrderController::class, 'allOrdersAdmin']);
+    Route::post('update_order_status', [OrderController::class, 'update_order_status']);
 });
 Route::group([
     'middleware' => 'api',

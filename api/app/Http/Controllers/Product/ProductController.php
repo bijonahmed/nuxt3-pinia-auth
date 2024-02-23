@@ -441,9 +441,9 @@ class ProductController extends Controller
         // dd($request->all());
         $dynamicArray = explode(',', $request->item); // Convert the string to an array
         $lastElement  = trim(end($dynamicArray));
+     
         $category_id  = Categorys::where('name', $lastElement)->select('id')->first();
         $row          = ProductCategory::where('category_id', $category_id->id)->where('product_id', $request->product_id)->first();
-
         if (!empty($row->category_id)) {
             ProductCategory::where('category_id', $row->category_id)->delete();
         }
