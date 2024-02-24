@@ -164,8 +164,12 @@ class AuthController extends Controller
     public function showProfileData(Request $request)
     {
         $data = auth('api')->user();
+        $role_id   = $data->role_id; 
+        $role_name = DB::table('rule')->where('id', $role_id)->first();
+
         return response()->json([
-            'data' => $data,
+            'data'    => $data,
+            'rname'   => !empty($role_name) ? $role_name->name : "",
             'dataImg' => !empty($data->image) ? url($data->image) : "",
             'message' => 'User Profile Data'
         ]);

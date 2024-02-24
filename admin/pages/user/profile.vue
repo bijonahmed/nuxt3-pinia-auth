@@ -46,7 +46,6 @@
 
     definePageMeta({
     middleware: 'is-logged-out',
-    title: 'Profile' // Set your desired page title here
 
     })
 

@@ -1,12 +1,16 @@
 <template>
     <title>Admin Dashboard</title>
     <!--start page wrapper -->
-    
+
     <div class="content-wrapper mt-3">
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
-
+                    <center>
+                    <div class="loading-indicator" v-if="loading" style="text-align: center;">
+                        <Loader />
+                    </div>
+                  </center>
                     <div class="col-md-3 col-sm-6 col-12">
                         <div class="info-box">
                             <span class="info-box-icon bg-info"><i class="far fa-envelope"></i></span>
@@ -72,19 +76,25 @@ const router = useRouter()
 const userStore = useUserStore()
 
 const { email } = storeToRefs(userStore)
-
+const loading =ref(true)
 definePageMeta({
     middleware: 'is-logged-out',
-    title: 'Profile' // Set your desired page title here
 
 })
 
 onMounted(async () => {
+    // After 5 seconds, hide the loading indicator
+    setTimeout(() => {
+        loading.value = false; // Hide the loading indicator after 5 seconds
+    }, 500);
+
+
     try {
         await userStore.getUser()
     } catch (error) {
         //  console.log(error)
     }
 })
+
 
 </script>

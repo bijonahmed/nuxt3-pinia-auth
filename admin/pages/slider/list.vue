@@ -1,12 +1,12 @@
 <template>
-    <title>Product List</title>
+    <title>Slider List</title>
     <div>
         <div class="content-wrapper">
             <section class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <p>Product List</p>
+                            <p>Slider List</p>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
@@ -14,7 +14,7 @@
                                     <LazyNuxtLink to="/admin/dashboard">Home</LazyNuxtLink>
                                 </li>
                                 <li class="breadcrumb-item active">
-                                    <LazyNuxtLink to="/products/add">New</LazyNuxtLink>
+                                    <LazyNuxtLink to="/slider/add">New</LazyNuxtLink>
                                 </li>
                             </ol>
                         </div>
@@ -34,8 +34,8 @@
 
                                 <div class="col-lg-2 col-md-2 col-sm-6 mb-2">
                                     <select v-model="selectedFilter" class="form-control" @change="filterData">
-                                        <option value="1">Active Products</option>
-                                        <option value="0">Inactive Products</option>
+                                        <option value="1">Active</option>
+                                        <option value="0">Inactive</option>
                                     </select>
                                 </div>
 
@@ -57,25 +57,22 @@
                                             <thead>
                                                 <tr>
                                                     <th>SL</th>
-                                                    <th>Product Name</th>
-                                                    <th class="text-center">Quantity</th>
+                                                    <th>Slug</th>
+                                                    <th class="text-center">Images</th>
                                                     <th class="text-center">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr v-for="(pro, index) in productdata" :key="index">
                                                     <td>{{ pro.id }}</td>
-                                                    <td>{{ pro.name }}</td>
-                                                    <td class="text-center">{{ pro.stock_qty }}</td>
+                                                    <td>{{ pro.redirect_url }}</td>
+                                                    <td class="text-center"><img :src="pro.images"
+                                                            style="height:40px;width:40px; border-radius: 5px;" /></td>
                                                     <td>
                                                         <center>
                                                             <span @click="edit(pro.id)"><button type="button"><i
                                                                         class="fas fa-edit btnSize"></i></button></span>
 
-                                                            <span @click="deleteProduct(pro.id)"><button type="button"><i
-                                                                        class="fas fa-trash btnSize"></i></button></span>
-                                                            <span @click="preview(pro.id)"><button type="button"><i
-                                                                        class="fas fa-search-plus btnSize"></i></button></span>
                                                         </center>
                                                     </td>
                                                 </tr>
@@ -83,8 +80,8 @@
                                             <tfoot>
                                                 <tr>
                                                     <th>SL</th>
-                                                    <th>Product Name</th>
-                                                    <th class="text-center">Quantity</th>
+                                                    <th>Slug</th>
+                                                    <th class="text-center">Images</th>
                                                     <th class="text-center">Action</th>
                                                 </tr>
                                             </tfoot>
@@ -120,11 +117,14 @@
 import { ref, watch, onMounted } from "vue";
 import axios from "axios";
 
+
 definePageMeta({
     middleware: 'is-logged-out',
 })
 
+
 const router = useRouter();
+
 const loading = ref(false);
 const currentPage = ref(1);
 const pageSize = 10;
@@ -137,7 +137,7 @@ const selectedFilter = ref(1); // Add a ref for the search query
 const fetchData = async (page) => {
     try {
         loading.value = true;
-        const response = await axios.get(`/product/getProductList`, {
+        const response = await axios.get(`/setting/slidersImages`, {
             params: {
                 page: page,
                 pageSize: pageSize,
@@ -169,7 +169,7 @@ watch(currentPage, (newPage) => {
 const edit = (id) => {
 
     router.push({
-        path: '/products/edit',
+        path: '/slider/edit',
         query: {
             parameter: id
         }
@@ -198,27 +198,25 @@ const preview = (id) => {
 
 // Compute the range of displayed pages
 const displayedPages = computed(() => {
-            const maxDisplayedPages = 10; // Maximum number of displayed pages
-            const startPage = Math.max(
-                1,
-                currentPage.value - Math.floor(maxDisplayedPages / 2)
-            );
-            const endPage = Math.min(
-                totalPages.value,
-                startPage + maxDisplayedPages - 1
-            );
-            return Array.from(
-                { length: endPage - startPage + 1 },
-                (_, i) => startPage + i
-            );
-        });
-
+    const maxDisplayedPages = 10; // Maximum number of displayed pages
+    const startPage = Math.max(
+        1,
+        currentPage.value - Math.floor(maxDisplayedPages / 2)
+    );
+    const endPage = Math.min(
+        totalPages.value,
+        startPage + maxDisplayedPages - 1
+    );
+    return Array.from(
+        { length: endPage - startPage + 1 },
+        (_, i) => startPage + i
+    );
+});
 
 const filterData = () => {
     fetchData(1); // Reset to first page when search query changes
 };
 </script>
-
 
 <style>
 .pagination {
@@ -229,7 +227,7 @@ const filterData = () => {
 .pagination button {
     margin: 0 5px;
     padding: 5px 10px;
-    background-color:#2f2f2f;
+    background-color: #2f2f2f;
     color: #fff;
     border: none;
     border-radius: 5px;

@@ -314,7 +314,9 @@ import axios from 'axios';
 import swal from 'sweetalert2';
 window.Swal = swal;
 
-
+definePageMeta({
+    middleware: 'is-logged-out',
+})
 const productData = ref({
     id: '',
     name: '',

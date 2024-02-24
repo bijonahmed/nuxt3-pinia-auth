@@ -65,22 +65,46 @@ class BrandsController extends Controller
         ];
         return response()->json($response, 200);
     }
-    public function allbrandlist()
+    public function allbrandlist(Request $request)
     {
+        //dd($request->all());
+        $page = $request->input('page', 1);
+        $pageSize = $request->input('pageSize', 10);
 
-        try {
-            $rows = Brands::all();
-            $response = [
-                'data' => $rows,
-                'message' => 'success'
-            ];
-        } catch (\Throwable $th) {
-            $response = [
-                'data' => [],
-                'message' => 'failed'
-            ];
+        // Get search query from the request
+        $searchQuery    = $request->searchQuery;
+        $selectedFilter = (int)$request->selectedFilter;
+        // dd($selectedFilter);
+        $query = Brands::orderBy('id', 'desc');
+
+        if ($searchQuery !== null) {
+            $query->where('name', 'like', '%' . $searchQuery . '%');
         }
-        return response()->json($response, 200);
+
+        if ($selectedFilter !== null) {
+
+            $query->where('status', $selectedFilter);
+        }
+
+        $paginator = $query->paginate($pageSize, ['*'], 'page', $page);
+
+        $modifiedCollection = $paginator->getCollection()->map(function ($item) {
+            return [
+                'id'         => $item->id,
+                'name'       => substr($item->name, 0, 250),
+                'stock_qty'  => $item->stock_qty,
+                'status'     => $item->status,
+            ];
+        });
+
+        // Return the modified collection along with pagination metadata
+        return response()->json([
+            'data' => $modifiedCollection,
+            'current_page' => $paginator->currentPage(),
+            'total_pages' => $paginator->lastPage(),
+            'total_records' => $paginator->total(),
+        ], 200);
+ 
     }
 
 

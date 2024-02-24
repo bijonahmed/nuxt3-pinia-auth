@@ -521,6 +521,11 @@ if (process.client) {
     window.Swal = swal;
 
 }
+
+definePageMeta({
+    middleware: 'is-logged-out',
+})
+
 const summernoteEditor = ref(null);
 const insertdata = reactive({
     id: '',

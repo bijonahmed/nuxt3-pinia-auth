@@ -42,7 +42,7 @@ class UnauthenticatedController extends Controller
                 'id'        => $item['id'],
                 'name'      => substr($item['name'], 0, 20),
                 'thumnail'  => !empty($item->thumnail_img) ? url($item->thumnail_img) : "",
-                'slug'        => $item['slug'],
+                'slug'      => $item['slug'],
             ];
         });
         //dd($modifiedCollection);
@@ -67,6 +67,7 @@ class UnauthenticatedController extends Controller
 
     public function slidersImages()
     {
+      
         $data = Sliders::where('status', 1)->get();
 
         foreach ($data as $v) {

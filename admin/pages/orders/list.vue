@@ -129,6 +129,10 @@ const orderStatus = ref([]);
 const searchQuery = ref(""); // Add a ref for the search query
 const selectedFilter = ref(''); // Add a ref for the search query
 
+
+definePageMeta({
+    middleware: 'is-logged-out',
+})
 const fetchData = async (page) => {
     try {
         loading.value = true;

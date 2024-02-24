@@ -75,25 +75,14 @@ const menuItems = ref([
 		]
 	},
 	{
-		label: 'Customer',
-		icon: 'fa-folder',
-		badge: '',
-		open: false,
-		route: null,
-		children: [
-			{ label: 'Customer Add', icon: 'fa-circle', route: '/charts/chartjs' },
-			{ label: 'Customer List', icon: 'fa-circle', route: '/charts/flot' }
-		]
-	},
-	{
 		label: 'User Management',
 		icon: 'fa-folder',
 		badge: '',
 		open: false,
 		route: null,
 		children: [
-			{ label: 'User Role', icon: 'fa-circle', route: '/charts/chartjs' },
-			{ label: 'User List', icon: 'fa-circle', route: '/charts/flot' }
+			{ label: 'User Role', icon: 'fa-circle', route: '/user/rule-list' },
+			{ label: 'User List', icon: 'fa-circle', route: '/user/user-list' }
 		]
 	},
 	{
@@ -104,10 +93,10 @@ const menuItems = ref([
 		route: null,
 		children: [
 			{ label: 'Category', icon: 'fa-circle', route: '/category/list' },
-			{ label: 'Attributes', icon: 'fa-circle', route: '#' },
-			{ label: 'Brands', icon: 'fa-circle', route: '#' },
-			{ label: 'Sliders', icon: 'fa-circle', route: '#' },
-			{ label: 'Pre-Setting', icon: 'fa-circle', route: '#' }
+			//{ label: 'Attributes', icon: 'fa-circle', route: '#' },
+			{ label: 'Brands', icon: 'fa-circle', route: '/brand/list' },
+			{ label: 'Sliders', icon: 'fa-circle', route: '/slider/list' },
+			{ label: 'Pre-Setting', icon: 'fa-circle', route: '/setting/presetting' }
 		]
 	}
 ]);

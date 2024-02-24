@@ -10,6 +10,8 @@ use DB;
 class User extends Authenticatable implements JWTSubject
 {
   use HasApiTokens, HasFactory, Notifiable;
+
+  public $table = "users";
   protected $fillable = [
     'name',
     'email',

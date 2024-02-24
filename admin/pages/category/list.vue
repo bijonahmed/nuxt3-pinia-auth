@@ -25,9 +25,10 @@
                 </div>
             </section>
 
-            <!-- <button @click="pageRedirect()">Pages</button> -->
+
             <section class="content">
                 <div class="container-fluid">
+                    <div style="text-align: right;"><button @click="fetchData()"><i class="fas fa-filter"></i> Filter</button> </div>
                     <!-- Start -->
                     <div class="card border-top border-0 border-4 border-info">
                         <div class="border p-4 rounded">
@@ -52,6 +53,9 @@
 
                                     </ul>
                                 </div>
+                                <div class="loading-indicator" v-if="loading" style="text-align: center;">
+                                    <Loader />
+                                </div>
                                 <div class="card-body">
                                     <div class="tab-content" id="custom-tabs-three-tabContent">
                                         <div class="tab-pane fade active show" id="custom-tabs-three-home" role="tabpanel"
@@ -60,47 +64,46 @@
 
                                             <ul>
                                                 <li v-for="category in categories" :key="category.id">
-                                                    <span class="badge bg-dark">{{ category.name }}</span>
+                                                    <span class="badge bg-dark">{{ category.name }}&nbsp;<span @click="editCategory(category.id)"><i class="fas fa-edit"></i></span></span>
                                                     <ul v-if="category.children && category.children.length">
                                                         <template v-for="childLevel1 in category.children"
                                                             :key="childLevel1.id">
                                                             <li>
-                                                                <span class="badge bg-secondary">{{ childLevel1.name
-                                                                }}</span>
+                                                                <span class="badge bg-secondary">{{ childLevel1.name }}&nbsp;<span @click="editCategory(childLevel1.id)"><i class="fas fa-edit"></i></span></span>
                                                                 <ul
                                                                     v-if="childLevel1.children && childLevel1.children.length">
                                                                     <template v-for="childLevel2 in childLevel1.children"
                                                                         :key="childLevel2.id">
                                                                         <li>
-                                                                            <span>{{ childLevel2.name }}</span>
+                                                                            <span>{{ childLevel2.name }}&nbsp;<span @click="editCategory(childLevel2.id)"><i class="fas fa-edit"></i></span></span>
                                                                             <ul
                                                                                 v-if="childLevel2.children && childLevel2.children.length">
                                                                                 <template
                                                                                     v-for="childLevel3 in childLevel2.children"
                                                                                     :key="childLevel3.id">
                                                                                     <li>
-                                                                                        <span >{{ childLevel3.name }}</span>
+                                                                                        <span >{{ childLevel3.name }}&nbsp;<span @click="editCategory(childLevel3.id)"><i class="fas fa-edit"></i></span></span>
                                                                                         <ul
                                                                                             v-if="childLevel3.children && childLevel3.children.length">
                                                                                             <template
                                                                                                 v-for="childLevel4 in childLevel3.children"
                                                                                                 :key="childLevel4.id">
                                                                                                 <li>
-                                                                                                    <span>{{  childLevel4.name }}</span>
+                                                                                                    <span>{{  childLevel4.name }}&nbsp;<span @click="editCategory(childLevel4.id)"><i class="fas fa-edit"></i></span></span> 
                                                                                                     <ul
                                                                                                         v-if="childLevel4.children && childLevel4.children.length">
                                                                                                         <template
                                                                                                             v-for="childLevel5 in childLevel4.children"
                                                                                                             :key="childLevel5.id">
                                                                                                             <li>
-                                                                                                                <span >{{ childLevel5.name }}</span>
+                                                                                                                <span >{{ childLevel5.name }}&nbsp;<span @click="editCategory(childLevel5.id)"><i class="fas fa-edit"></i></span></span>
                                                                                                                 <ul
                                                                                                                     v-if="childLevel5.children && childLevel5.children.length">
                                                                                                                     <template
                                                                                                                         v-for="childLevel6 in childLevel5.children"
                                                                                                                         :key="childLevel6.id">
                                                                                                                         <li>
-                                                                                                                            <span>{{ childLevel6.name }}</span>
+                                                                                                                            <span>{{ childLevel6.name }}&nbsp;<span @click="editCategory(childLevel6.id)"><i class="fas fa-edit"></i></span></span>
                                                                                                                             <!-- Add more nested levels if needed -->
                                                                                                                         </li>
                                                                                                                     </template>
@@ -157,6 +160,14 @@ import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from "axios";
 
+definePageMeta({
+    middleware: 'is-logged-out',
+    title: 'Profile' // Set your desired page title here
+
+})
+
+
+const loading = ref(false);
 const categories = ref([]);
 const Inacategories = ref([]);
 
@@ -171,11 +182,14 @@ const editCategory = (id) => {
 
 const fetchData = async () => {
     try {
+        loading.value = true;
         const response = await axios.get('/category/getCategoryList');
-        console.log(response.data); // Print the data received from the server
+        //console.log(response.data); // Print the data received from the server
         categories.value = response.data; // Set the categories value to the data received
     } catch (error) {
-        console.error(error);
+        // Handle error
+    } finally {
+        loading.value = false;
     }
 };
 

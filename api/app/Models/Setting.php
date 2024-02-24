@@ -10,6 +10,15 @@ use DB;
 class Setting extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
+
+
+    public $table = "setting";
+  
+    protected $fillable = [
+      'id',
+      'name',
+    ];
+
     public static function filterEmpList($data = array())
     {
         //dd($data);

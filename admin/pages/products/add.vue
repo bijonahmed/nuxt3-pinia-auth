@@ -21,7 +21,7 @@
           </div>
         </div>
       </section>
-    
+
       <!-- <button @click="pageRedirect()">Pages</button> -->
       <section class="content">
         <div class="container-fluid">
@@ -471,7 +471,10 @@ const file = ref(null);
 const files = ref(null);
 const errors = ref({});
 // Initialize Summernote editor
- 
+
+definePageMeta({
+    middleware: 'is-logged-out',
+})
 // Define your methods
 const searchModels = async () => {
   try {
@@ -627,7 +630,7 @@ const saveData = () => {
 
   console.log("Data to be saved:", editorContent.value);
 
- 
+
   formData.append('id', insertdata.id);
   formData.append('files', file.value);
   console.log("multi category: " + multi_categories.value);
@@ -683,41 +686,41 @@ const saveData = () => {
 
   }).catch(error => {
     if (error.response && error.response.status === 422) {
-    errors.value = error.response.data.errors;
-  } else {
-    // Handle other types of errors here
-    console.error("An error occurred:", error);
-  }
+      errors.value = error.response.data.errors;
+    } else {
+      // Handle other types of errors here
+      console.error("An error occurred:", error);
+    }
   });
 };
 
 const success_noti = () => {
   //alert("Your data has been successfully inserted.");
   const Toast = Swal.mixin({
-  toast: true,
-  position: "top-end",
-  showConfirmButton: false,
-  timer: 1000,
-  timerProgressBar: true,
-  didOpen: (toast) => {
-    toast.onmouseenter = Swal.stopTimer;
-    toast.onmouseleave = Swal.resumeTimer;
-  }
-});
-Toast.fire({
-  icon: "success",
-  title: "Your data has been successfully inserted."
-});
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 1000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    }
+  });
+  Toast.fire({
+    icon: "success",
+    title: "Your data has been successfully inserted."
+  });
 };
 
 
-const pageRedirect = () =>{
+const pageRedirect = () => {
   router.push({
-      path: '/products/preview',
-      query: {
-        parameter: 2612
-      }
-    });
+    path: '/products/preview',
+    query: {
+      parameter: 2612
+    }
+  });
 }
 
 onUnmounted(() => {
@@ -729,9 +732,9 @@ onMounted(async () => {
   searchmanuf();
   $('.summernote-editor').summernote({
     callbacks: {
-      onChange: function(contents) {
+      onChange: function (contents) {
         editorContent.value = contents;
-       // emit('content-updated', editorContent.value);
+        // emit('content-updated', editorContent.value);
       }
     }
   });

@@ -1,12 +1,12 @@
 <template>
-    <title>Product List</title>
+    <title>User List</title>
     <div>
         <div class="content-wrapper">
             <section class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <p>Product List</p>
+                            <p>User List</p>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
@@ -14,7 +14,7 @@
                                     <LazyNuxtLink to="/admin/dashboard">Home</LazyNuxtLink>
                                 </li>
                                 <li class="breadcrumb-item active">
-                                    <LazyNuxtLink to="/products/add">New</LazyNuxtLink>
+                                    <LazyNuxtLink to="/user/useradd">New</LazyNuxtLink>
                                 </li>
                             </ol>
                         </div>
@@ -29,13 +29,13 @@
                             <div class="row">
                                 <div class="col-lg-8 col-md-8 col-sm-12 mb-2">
                                     <input type="text" v-model="searchQuery" class="form-control"
-                                        placeholder="Search Product" />
+                                        placeholder="Search Name" />
                                 </div>
 
                                 <div class="col-lg-2 col-md-2 col-sm-6 mb-2">
                                     <select v-model="selectedFilter" class="form-control" @change="filterData">
-                                        <option value="1">Active Products</option>
-                                        <option value="0">Inactive Products</option>
+                                        <option value="1">Active</option>
+                                        <option value="0">Inactive</option>
                                     </select>
                                 </div>
 
@@ -56,35 +56,44 @@
                                         <table class="table w-100 table-wrapper">
                                             <thead>
                                                 <tr>
-                                                    <th>SL</th>
-                                                    <th>Product Name</th>
-                                                    <th class="text-center">Quantity</th>
+                                                    <th>Role</th>
+                                                    <th>Name</th>
+                                                    <th>Email</th>
+                                                    <th>Phone</th>
+                                                    <th>Password</th>
+                                                    <th class="text-center">Status</th>
                                                     <th class="text-center">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr v-for="(pro, index) in productdata" :key="index">
-                                                    <td>{{ pro.id }}</td>
-                                                    <td>{{ pro.name }}</td>
-                                                    <td class="text-center">{{ pro.stock_qty }}</td>
+                                                <tr v-for="item in productdata" :key="item.id">
+                                                    <td>{{ item.rulename }}</td>
+                                                    <td>{{ item.name }}</td>
+                                                    <td>{{ item.email }}</td>
+                                                    <td>{{ item.phone_number }}</td>
+                                                    <td>{{ item.show_password }}</td>
+                                                    <td class="text-center">
+                                                        <span v-if="(item.status == 1)"> Active </span>
+                                                        <span v-else> Inactive </span>
+                                                    </td>
                                                     <td>
                                                         <center>
-                                                            <span @click="edit(pro.id)"><button type="button"><i
-                                                                        class="fas fa-edit btnSize"></i></button></span>
-
-                                                            <span @click="deleteProduct(pro.id)"><button type="button"><i
-                                                                        class="fas fa-trash btnSize"></i></button></span>
-                                                            <span @click="preview(pro.id)"><button type="button"><i
-                                                                        class="fas fa-search-plus btnSize"></i></button></span>
+                                                            <button type="button"><i class="fas fa-edit"
+                                                                    @click="edit(item.id)"></i></button>
+                                                            <button type="button"><i class="fas fa-key"
+                                                                    @click="changePass(item.id)"></i></button>
                                                         </center>
                                                     </td>
                                                 </tr>
                                             </tbody>
                                             <tfoot>
                                                 <tr>
-                                                    <th>SL</th>
-                                                    <th>Product Name</th>
-                                                    <th class="text-center">Quantity</th>
+                                                    <th>Role</th>
+                                                    <th>Name</th>
+                                                    <th>Email</th>
+                                                    <th>Phone</th>
+                                                    <th>Password</th>
+                                                    <th class="text-center">Status</th>
                                                     <th class="text-center">Action</th>
                                                 </tr>
                                             </tfoot>
@@ -119,11 +128,11 @@
 <script setup>
 import { ref, watch, onMounted } from "vue";
 import axios from "axios";
-
 definePageMeta({
     middleware: 'is-logged-out',
-})
+    title: 'Profile' // Set your desired page title here
 
+})
 const router = useRouter();
 const loading = ref(false);
 const currentPage = ref(1);
@@ -137,7 +146,7 @@ const selectedFilter = ref(1); // Add a ref for the search query
 const fetchData = async (page) => {
     try {
         loading.value = true;
-        const response = await axios.get(`/product/getProductList`, {
+        const response = await axios.get(`/user/allUsers`, {
             params: {
                 page: page,
                 pageSize: pageSize,
@@ -169,15 +178,32 @@ watch(currentPage, (newPage) => {
 const edit = (id) => {
 
     router.push({
-        path: '/products/edit',
+        path: '/user/useredit',
         query: {
             parameter: id
         }
     });
-
     // Your logic for editing goes here
     console.log('Editing item with id:', id);
 };
+
+
+
+// Define a method to handle editing
+const changePass = (id) => {
+
+    router.push({
+        path: '/user/changePassword',
+        query: {
+            parameter: id
+        }
+    });
+    // Your logic for editing goes here
+    console.log('Change Password id:', id);
+};
+
+
+
 
 // Define a method to handle deleting
 const deleteProduct = (id) => {
@@ -198,27 +224,25 @@ const preview = (id) => {
 
 // Compute the range of displayed pages
 const displayedPages = computed(() => {
-            const maxDisplayedPages = 10; // Maximum number of displayed pages
-            const startPage = Math.max(
-                1,
-                currentPage.value - Math.floor(maxDisplayedPages / 2)
-            );
-            const endPage = Math.min(
-                totalPages.value,
-                startPage + maxDisplayedPages - 1
-            );
-            return Array.from(
-                { length: endPage - startPage + 1 },
-                (_, i) => startPage + i
-            );
-        });
-
+    const maxDisplayedPages = 10; // Maximum number of displayed pages
+    const startPage = Math.max(
+        1,
+        currentPage.value - Math.floor(maxDisplayedPages / 2)
+    );
+    const endPage = Math.min(
+        totalPages.value,
+        startPage + maxDisplayedPages - 1
+    );
+    return Array.from(
+        { length: endPage - startPage + 1 },
+        (_, i) => startPage + i
+    );
+});
 
 const filterData = () => {
     fetchData(1); // Reset to first page when search query changes
 };
 </script>
-
 
 <style>
 .pagination {
@@ -229,7 +253,7 @@ const filterData = () => {
 .pagination button {
     margin: 0 5px;
     padding: 5px 10px;
-    background-color:#2f2f2f;
+    background-color: #2f2f2f;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -285,5 +309,4 @@ td {
 
 tr:hover {
     background-color: rgb(221, 221, 221);
-}
-</style>
+}</style>

@@ -131,8 +131,16 @@ import axios from 'axios';
 import swal from 'sweetalert2';
 window.Swal = swal;
 
+
 export default {
   setup() {
+
+    definePageMeta({
+    middleware: 'is-logged-out',
+    
+
+})
+
     const orderstatus = ref('');
     const orderid = ref('');
     const customername = ref('');
@@ -146,6 +154,7 @@ export default {
     const order_status = ref([]);
     const notifmsg = ref('');
     const errors = ref({});
+
 
     const saveData = () => {
 

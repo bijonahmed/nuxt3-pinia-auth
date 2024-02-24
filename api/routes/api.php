@@ -94,6 +94,7 @@ Route::group([
     Route::post('saveDepartment', [UserController::class, 'saveDepartment']);
     Route::post('changePassword', [UserController::class, 'changePassword']);
     Route::post('saveUser', [UserController::class, 'saveUser']);
+    Route::post('updateUser', [UserController::class, 'updateUser']);
     Route::post('assignToUser', [UserController::class, 'assignToUser']);
     Route::post('saveRole', [UserController::class, 'saveRole']);
     Route::get('getRoleList', [UserController::class, 'getRoleList']);
@@ -258,6 +259,14 @@ Route::group([
     Route::post('insertPayItem', [SettingController::class, 'insertPayItem']);
     Route::get('getPayItemList', [SettingController::class, 'getPayItemList']);
     Route::get('checkPayItemRow/{id}', [SettingController::class, 'checkPayItemRow']);
+    Route::get('slidersImages', [SettingController::class, 'slidersImages']);
+     //add slider 
+    Route::post('insertSlider', [SettingController::class, 'insertSlider']);
+    Route::post('upateSetting', [SettingController::class, 'upateSetting']);
+    Route::get('slidersImages', [SettingController::class, 'slidersImages']);
+    Route::get('sliderrow/{id}', [SettingController::class, 'sliderrow']);
+    //setting row
+    Route::get('settingrow', [SettingController::class, 'settingrow']);
 });
 Route::group([
     'middleware' => 'api',
